@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define any environment variables here
+        GIT_REPO = 'https://github.com/venkatesh523/Docker-example.git'
+        BRANCH = 'master'
+    }
+
+    stages {
+        // Stage 1: Checkout the code from the GitHub repository
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout code from GitHub repository
+                    git branch: "${BRANCH}", url: "${GIT_REPO}"
+                }
+            }
+        }
+
+        // Stage 2: Build the application
+        stage('Build') {
+            steps {
+                script {
+                    // Example for a Node.js app; adjust for your tech stack
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        // Stage 3: Run tests
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests (for a Node.js app, for example)
+                    sh 'npm test'
+                }
+            }
+        }
+
+        // Stage 4: Deploy (Optional, for example, deploying to a staging server)
+        stage('Deploy') {
+            steps {
+                script {
+                    // Example: deploy to a staging server
+                    // You can add your deployment scripts here (e.g., using SSH, Kubernetes, Docker, etc.)
+                    echo "Deploying to staging environment..."
+                    sh './deploy.sh'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and deploy succeeded!'
+        }
+
+        failure {
+            echo 'Build or deploy failed!'
+        }
+    }
+}
