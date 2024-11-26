@@ -14,8 +14,8 @@ RUN npm install
 COPY . .
 
 # Step 6: Expose the port that the application will listen on
-EXPOSE 3000
+EXPOSE 8000
 
 # Step 7: Define the default command to run the app
-CMD ["npm", "start", "0.0.0.0:3000"]
+CMD ["npm", "start", "0.0.0.0:8000"]
 
