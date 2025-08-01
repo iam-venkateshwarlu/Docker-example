@@ -16,11 +16,11 @@ pipeline {
         sh 'docker buildx create --use || echo "buildx already exists"'
       }
     }
-    // stage('Build and Push') {
-    //   steps {
-    //     sh 'docker buildx build -tag venkatesh1409/sample-nodejs-app:8 -f Dockerfile .'
-    //   }
-    // } 
+    stage('Build') {
+      steps {
+        sh 'docker build -t venkatesh1409/sample-nodejs-app:v3 .'
+      }
+    } 
     stage('Push') {
       steps {
         script {
