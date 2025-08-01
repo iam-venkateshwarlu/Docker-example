@@ -1,6 +1,8 @@
 pipeline {
   agent any
   environment {
+    DOCKER_BUILDKIT = "1"
+    DOCKER_CLI_EXPERIMENTAL = "enabled"
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
   }
   stages {
@@ -17,10 +19,10 @@ pipeline {
           sh 'ls -l'
           // If your Dockerfile is in the repo root, keep "."
           // If it’s in a subdirectory (e.g., app/), update -f accordingly
-          docker.build("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}", "-f Dockerfile .")
+            sh "docker buildx build --platform linux/amd64 -t venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f Dockerfile ."
         }
       }
-    }
+    }   
     stage('Push') {
       steps {
         script {
