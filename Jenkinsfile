@@ -30,15 +30,15 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      steps {
-        script {
-          // Remove old container if exists
-          sh 'docker rm -f node-app || true'
-          // Run new container
-          sh 'docker run -d --name node-app -p 3000:3000 venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}'
-        }
-      }
-    }
+    // stage('Deploy') {
+    //   steps {
+    //     script {
+    //       // Remove old container if exists
+    //       sh 'docker rm -f node-app || true'
+    //       // Run new container
+    //       sh 'docker run -d --name node-app -p 3000:3000 venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}'
+    //     }
+    //   }
+    // }
   }
 }
