@@ -11,7 +11,7 @@ pipeline {
         git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
       }
     }
-    stage('Build') {
+    // stage('Build') {
     //   steps {
     //     sh 'docker buildx create --use || echo "buildx already exists"'
     //   }
