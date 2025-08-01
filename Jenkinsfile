@@ -16,7 +16,7 @@ pipeline {
         sh 'docker buildx create --use || echo "buildx already exists"'
       }
     }
-    stage('Build') {
+    stage('Build Image') {
       steps {
         sh 'docker build -t venkatesh1409/sample-nodejs-app:v3 .'
       }
