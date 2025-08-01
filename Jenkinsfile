@@ -19,7 +19,7 @@ pipeline {
           sh 'ls -l'
           // If your Dockerfile is in the repo root, keep "."
           // If it’s in a subdirectory (e.g., app/), update -f accordingly
-            sh "docker build -t venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f ./docker/Dockerfile ./docker ."
+            sh "docker buildx build -t  venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f Dockerfile ."
         }
       }
     }   
