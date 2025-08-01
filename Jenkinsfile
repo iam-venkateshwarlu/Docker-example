@@ -12,16 +12,16 @@ pipeline {
       }
     }
     stage('Build') {
+        stage('Setup buildx') {
       steps {
-        script {
-        //   docker.build("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}")
-        // Verify files exist before building
-          sh 'ls -l'
-          // If your Dockerfile is in the repo root, keep "."
-          // If it’s in a subdirectory (e.g., app/), update -f accordingly
-            sh "docker buildx build -t  venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f Dockerfile ."
-        }
+        sh 'docker buildx create --use || echo "buildx already exists"'
       }
+    }
+    stage('Build and Push') {
+      steps {
+        sh 'docker buildx build -t venkatesh1409/sample-nodejs-app:8 -f Dockerfile .'
+      }
+    }
     }   
     stage('Push') {
       steps {
