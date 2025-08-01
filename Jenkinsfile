@@ -1,8 +1,8 @@
 pipeline {
   agent any
   environment {
-    DOCKER_BUILDKIT = "1"
-    DOCKER_CLI_EXPERIMENTAL = "enabled"
+    // DOCKER_BUILDKIT = "1"
+    // DOCKER_CLI_EXPERIMENTAL = "enabled"
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
   }
   stages {
@@ -12,10 +12,10 @@ pipeline {
       }
     }
     stage('Build') {
-      steps {
-        sh 'docker buildx create --use || echo "buildx already exists"'
-      }
-    }
+    //   steps {
+    //     sh 'docker buildx create --use || echo "buildx already exists"'
+    //   }
+    // }
     stage('Build Image') {
       steps {
         sh 'docker build -t venkatesh1409/sample-nodejs-app:v3 .'
