@@ -18,14 +18,14 @@ pipeline {
     }
     stage('Build and Push') {
       steps {
-        sh 'docker buildx build -t venkatesh1409/sample-nodejs-app:8 -f Dockerfile .'
+        sh 'docker buildx build -tag venkatesh1409/sample-nodejs-app:8 -f Dockerfile .'
       }
     } 
     stage('Push') {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
-            docker.image("yourusername/sample-nodejs-app:${BUILD_NUMBER}").push()
+            docker.image("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}").push()
           }
         }
       }
