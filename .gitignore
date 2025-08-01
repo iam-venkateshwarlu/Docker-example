@@ -1,7 +1,6 @@
 node_modules
 npm-debug.log
 .git
-Dockerfile
 *.md
 
 # Local Terraform directories
