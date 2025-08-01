@@ -20,8 +20,9 @@ pipeline {
             docker buildx inspect --bootstrap
           '''
             // Build using buildx
+            sh """
             docker buildx build -t venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f Dockerfile . --load
-
+          """
         }
       }
     }
