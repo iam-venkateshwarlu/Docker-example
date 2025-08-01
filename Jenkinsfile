@@ -12,7 +12,12 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          docker.build("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}")
+        //   docker.build("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}")
+        // Verify files exist before building
+          sh 'ls -l'
+          // If your Dockerfile is in the repo root, keep "."
+          // If it’s in a subdirectory (e.g., app/), update -f accordingly
+          docker.build("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}", "-f Dockerfile .")
         }
       }
     }
