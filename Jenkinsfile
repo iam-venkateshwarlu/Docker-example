@@ -1,56 +1,44 @@
 pipeline {
     agent any
+
     environment {
-          DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-            IMAGE_NAME = "venkatesh1409/sample-nodejs-app"
+        IMAGE_NAME = 'venkatesh1409/sample-nodejs-app'
+        IMAGE_TAG = 'v3'
     }
+
     stages {
         stage('Checkout') {
             steps {
                 git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
-        /*
+
         stage('Verify Dockerfile') {
             steps {
-                sh 'ls -l'
+                script {
+                    if (!fileExists('Dockerfile')) {
+                        error 'Dockerfile not found!'
+                    }
+                }
                 sh 'cat Dockerfile'
             }
         }
-        stage('Setup Docker Buildx') {
+
+        stage('Build Docker Image') {
             steps {
-                sh '''
-                  docker buildx create --use || echo "Buildx builder already exists."
-                  docker buildx inspect --bootstrap
-                '''
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
-         stage('Login to Docker Hub & Build/Push') {
+
+        stage('Push to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
                     sh '''
                         echo "${DOCKERHUB_PASS}" | docker login --username "${DOCKERHUB_USER}" --password-stdin
-                        docker buildx build \
-                            --platform linux/amd64 \
-                            --tag ${IMAGE_NAME}:${IMAGE_TAG} \
-                            --tag ${IMAGE_NAME}:latest \
-                            --push \
-                            -f Dockerfile .
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
                     '''
                 }
             }
-        }*/
-       stage('Build Docker Image') {
-    steps {
-        sh "docker build -t venkatesh1409/sample-nodejs-app:v3 ."
-    }
-}
-        stage('Push to Docker Hub') {
-            steps {
-                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                sh 'docker push $IMAGE_NAME:v3'
-            }
         }
-       
     }
 }
