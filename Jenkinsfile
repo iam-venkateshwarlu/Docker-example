@@ -7,6 +7,12 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+    steps {
+        deleteDir()
+    }
+}
+
         stage('Checkout') {
             steps {
                 git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
