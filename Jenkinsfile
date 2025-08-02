@@ -1,47 +1,36 @@
 pipeline {
     agent any
-
     environment {
-        IMAGE_NAME = 'venkatesh1409/sample-nodejs-app'
-        IMAGE_TAG = 'v3'
+        IMAGE_NAME = "venkatesh1409/sample-nodejs-app"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
     }
-
     stages {
         stage('Clean Workspace') {
-    steps {
-        deleteDir()
-    }
-}
-
+            steps {
+                deleteDir()
+            }
+        }
         stage('Checkout') {
             steps {
                 git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
-
-      stage('Verify Files') {
-    steps {
-        sh 'pwd'
-        sh 'ls -l'
-        sh 'cat Dockerfile || echo "Dockerfile missing!"'
-    }
-}
-
-
-        stage('Build Docker Image') {
+        stage('Verify Files') {
             steps {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                sh 'pwd'
+                sh 'ls -l'
+                sh 'cat Dockerfile || echo "NO DOCKERFILE FOUND"'
             }
         }
-
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:latest .'
+            }
+        }
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
-                    sh '''
-                        echo "${DOCKERHUB_PASS}" | docker login --username "${DOCKERHUB_USER}" --password-stdin
-                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                    '''
-                }
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh 'docker push $IMAGE_NAME:latest'
             }
         }
     }
