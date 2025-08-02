@@ -10,6 +10,12 @@ pipeline {
                 git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
+        stage('Verify Dockerfile') {
+            steps {
+                sh 'ls -l'
+                sh 'cat Dockerfile'
+            }
+        }
         stage('Setup Docker Buildx') {
             steps {
                 sh '''
