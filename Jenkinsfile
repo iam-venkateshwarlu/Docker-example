@@ -43,7 +43,7 @@ pipeline {
 
        stage('Build Docker Image') {
     steps {
-        sh "docker build -t $IMAGE_NAME:latest -f ${env.WORKSPACE}/app/Dockerfile ${env.WORKSPACE}/app"
+        sh "docker build -t venkatesh1409/sample-nodejs-app:v3 ."
     }
 }
         stage('Push to Docker Hub') {
