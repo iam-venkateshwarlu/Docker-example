@@ -43,13 +43,15 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:v3 -f app/Dockerfile app'
+                dir('app') {
+                sh 'docker build -t $IMAGE_NAME:v3 .'
+        }
             }
         }
         stage('Push to Docker Hub') {
             steps {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                sh 'docker push $IMAGE_NAME:latest'
+                sh 'docker push $IMAGE_NAME:v3'
             }
         }
        
