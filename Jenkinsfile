@@ -43,7 +43,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:v3 -f app/Dockerfile .'
+                dir('app') {
+                    sh 'docker build -t $IMAGE_NAME:v3 .'
+                }
             }
         }
         stage('Push to Docker Hub') {
