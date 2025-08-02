@@ -1,53 +1,51 @@
 pipeline {
-  agent any
-  environment {
-    DOCKER_BUILDKIT = "1"
-    DOCKER_CLI_EXPERIMENTAL = "enabled"
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-  }
-  stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
-      }
+    agent any
+
+    environment {
+        DOCKERHUB_USER = credentials('dockerhub-creds').username
+        DOCKERHUB_PASS = credentials('dockerhub-creds').password
+        IMAGE_NAME     = "venkatesh1409/sample-nodejs-app"
+        IMAGE_TAG      =  "v3" //"${env.BUILD_NUMBER}"
     }
-    stage('Build') {
-      steps {
-        script {
-          // Ensure Docker Buildx is set up
-          sh '''
-            docker buildx create --use || true
-            docker buildx inspect --bootstrap
-          '''
-            // Build using buildx
-            sh """
-            docker buildx build \
-  --platform linux/amd64 \
-  -t venkatesh1409/sample-nodejs-app:v3 \
-  -f Dockerfile . \
-  --load
-          """
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
+            }
         }
-      }
-    }
-    stage('Push') {
-      steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
-            docker.image("venkatesh1409/sample-nodejs-app:v3").push()
-          }
+        stage('Setup Docker Buildx') {
+            steps {
+                sh '''
+                  # Ensure buildx is set up; ignore error if already exists
+                  docker buildx create --use || echo "Buildx builder already exists."
+                  docker buildx inspect --bootstrap
+                '''
+            }
         }
-      }
+        stage('Login to Docker Hub') {
+            steps {
+                sh '''
+                  echo "${DOCKERHUB_PASS}" | docker login --username "${DOCKERHUB_USER}" --password-stdin
+                '''
+            }
+        }
+        stage('Build with Buildx') {
+            steps {
+                sh '''
+                  docker buildx build \
+                    --platform linux/amd64 \
+                    --tag ${IMAGE_NAME}:${IMAGE_TAG} \
+                    --tag ${IMAGE_NAME}:latest \
+                    --push \
+                    -f Dockerfile .
+                '''
+            }
+        }
     }
-    // stage('Deploy') {
-    //   steps {
-    //     script {
-    //       // Remove old container if exists
-    //       sh 'docker rm -f node-app || true'
-    //       // Run new container
-    //       sh 'docker run -d --name node-app -p 3000:3000 venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}'
-    //     }
-    //   }
-    // }
-  }
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
 }
