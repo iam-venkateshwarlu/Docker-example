@@ -43,8 +43,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('app') {
-                sh 'docker build -t $IMAGE_NAME:v3 .'
+                sh 'docker build -t $IMAGE_NAME:latest -f app/Dockerfile app'
         }
             }
         }
