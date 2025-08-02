@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "venkatesh1409/sample-nodejs-app"
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+          DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+            IMAGE_NAME = "venkatesh1409/sample-nodejs-app"
     }
     stages {
         stage('Checkout') {
@@ -10,6 +10,7 @@ pipeline {
                 git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
+        /*
         stage('Verify Dockerfile') {
             steps {
                 sh 'ls -l'
@@ -24,7 +25,7 @@ pipeline {
                 '''
             }
         }
-        stage('Login to Docker Hub & Build/Push') {
+         stage('Login to Docker Hub & Build/Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
                     sh '''
@@ -38,11 +39,19 @@ pipeline {
                     '''
                 }
             }
+        }*/
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME:latest .'
+            }
         }
-    }
-    post {
-        always {
-            sh 'docker logout'
+        stage('Push to Docker Hub') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh 'docker push $IMAGE_NAME:latest'
+            }
         }
+       
     }
 }
