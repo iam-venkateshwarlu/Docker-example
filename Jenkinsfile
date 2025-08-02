@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$BUILD_NUMBER -f Docker-example/Dockerfile Docker-example'
+                sh 'docker build -t $IMAGE_NAME:$BUILD_NUMBER .'
 
             }
         }
