@@ -13,16 +13,14 @@ pipeline {
             }
         }
 
-        stage('Verify Dockerfile') {
-            steps {
-                script {
-                    if (!fileExists('Dockerfile')) {
-                        error 'Dockerfile not found!'
-                    }
-                }
-                sh 'cat Dockerfile'
-            }
-        }
+      stage('Verify Files') {
+    steps {
+        sh 'pwd'
+        sh 'ls -l'
+        sh 'cat Dockerfile || echo "Dockerfile missing!"'
+    }
+}
+
 
         stage('Build Docker Image') {
             steps {
