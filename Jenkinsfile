@@ -2,16 +2,16 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'your-dockerhub-username/your-image-name' // Replace with your Docker Hub username and image name
+        IMAGE_NAME = 'venkatesh1409/sample-nodejs-app' // Replace with your Docker Hub username and image name
         IMAGE_TAG = 'v3'
     }
 
     stages {
-        // stage('Clean Workspace') {
-        //     steps {
-        //         deleteDir()
-        //     }
-        // }
+        stage('Clean Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
 
         stage('Checkout') {
             steps {
