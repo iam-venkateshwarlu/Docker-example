@@ -40,7 +40,6 @@ pipeline {
                 }
             }
         }*/
-
        stage('Build Docker Image') {
     steps {
         sh "docker build -t venkatesh1409/sample-nodejs-app:v3 ."
