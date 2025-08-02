@@ -41,13 +41,11 @@ pipeline {
             }
         }*/
 
-        stage('Build Docker Image') {
-            steps {
-                dir('app') {
-                    sh 'docker build -t $IMAGE_NAME:v3 .'
-                }
-            }
-        }
+       stage('Build Docker Image') {
+    steps {
+        sh "docker build -t $IMAGE_NAME:latest -f ${env.WORKSPACE}/app/Dockerfile ${env.WORKSPACE}/app"
+    }
+}
         stage('Push to Docker Hub') {
             steps {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
