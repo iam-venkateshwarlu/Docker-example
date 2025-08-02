@@ -43,7 +43,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest -f app/Dockerfile app'
+                sh 'docker build -t $IMAGE_NAME:latest -f app/Dockerfile .'
             }
         }
         stage('Push to Docker Hub') {
