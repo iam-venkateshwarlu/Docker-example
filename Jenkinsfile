@@ -21,7 +21,11 @@ pipeline {
           '''
             // Build using buildx
             sh """
-            docker buildx build -t venkatesh1409/sample-nodejs-app:${BUILD_NUMBER} -f Dockerfile . --load
+            docker buildx build \
+  --platform linux/amd64 \
+  -t venkatesh1409/multiplatform:v3 \
+  -f Dockerfile . \
+  --load
           """
         }
       }
@@ -30,7 +34,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
-            docker.image("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}").push()
+            docker.image("venkatesh1409/sample-nodejs-app:v3").push()
           }
         }
       }
