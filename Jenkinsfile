@@ -23,7 +23,7 @@ pipeline {
             sh """
             docker buildx build \
   --platform linux/amd64 \
-  -t venkatesh1409/multiplatform:v3 \
+  -t venkatesh1409/sample-nodejs-app:v3 \
   -f Dockerfile . \
   --load
           """
