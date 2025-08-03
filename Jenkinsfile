@@ -33,11 +33,11 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ." // Builds the Docker image
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ." // Builds the Docker image
+        //     }
+        // }
 
         stage('Push Docker Image') {
             steps {
