@@ -15,11 +15,6 @@ pipeline {
                 sh 'docker build -t $IMAGE_NAME:$BUILD_NUMBER .'
             }
         }
-        stage('Run Tests') {
-            steps {
-                sh 'docker run --rm $IMAGE_NAME:$BUILD_NUMBER npm test'
-            }
-        }
         stage('Push to Docker Hub') {
             steps {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"

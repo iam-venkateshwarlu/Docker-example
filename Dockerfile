@@ -4,16 +4,16 @@ FROM node:18-alpine
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json first to leverage Docker caching
-COPY package*.json ./
+COPY app/*  /
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY app/ app/
+# COPY app/ app/
 
 # Expose the application port
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "app/index.js"]
+CMD ["npm,", "start"]

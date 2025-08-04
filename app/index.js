@@ -1,8 +1,15 @@
-const http = require('http');
-const port = 3000;
-const server = http.createServer((req, res) => {
-  res.end('Hello from Node.js running in a Docker container!');
+var express = require('express');
+var app = express();
+
+app.get('/', function (req, res) {
+    res.send('{ "response": "Hello, Welcome to Valaxy" }');
 });
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+
+app.get('/will', function (req, res) {
+    res.send('{ "response": "Hello World" }');
 });
+app.get('/ready', function (req, res) {
+    res.send('{ "response": " Great!, It works!" }');
+});
+app.listen(process.env.PORT || 3000);
+module.exports = app;
