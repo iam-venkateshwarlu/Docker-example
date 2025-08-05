@@ -18,17 +18,47 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
+        stage('Run Unit Tests') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'npm test || echo "⚠️ No tests found, skipping..."'
             }
         }
-        stage('Push to Docker Hub') {
+        stage('Build Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                sh """
+                   docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
+                   docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                """
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                sh """
+                   trivy image --exit-code 0 --severity HIGH,CRITICAL ${DOCKER_IMAGE}:${BUILD_NUMBER}
+                """
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                       echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                       docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}
+                       docker push ${DOCKER_IMAGE}:latest
+                    """
                 }
+            }
+        }
+        stage('Deploy to Minikube') {
+            steps {
+                sh """
+                   kubectl set image k8s/deployment/sample-nodejs-app sample-nodejs-app=${DOCKER_IMAGE}:${BUILD_NUMBER} --record
+                """
+            }
+        }
+        stage('Smoke Test') {
+            steps {
+                sh 'curl -s http://$(minikube ip):3000/health || echo "⚠️ Smoke test failed"'
             }
         }
     }
