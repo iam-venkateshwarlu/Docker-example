@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-nodejs-external
+spec: 
+  type: ExternalName
+  externalName: sample-nodejs-app.default.svc.cluster.local
+  ports:
+  - port: 80
+    
