@@ -52,7 +52,7 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 sh """
-                   kubectl set image k8s/deployment/sample-nodejs-app sample-nodejs-app=${DOCKER_IMAGE}:${BUILD_NUMBER} --record
+                   kubectl set image deployment/sample-nodejs-app sample-nodejs-app=${DOCKER_IMAGE}:${BUILD_NUMBER} --record
                 """
             }
         }
