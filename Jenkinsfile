@@ -1,35 +1,40 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "venkatesh1409/sample-nodejs-app"
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
+        DOCKER_TAG = "v${env.BUILD_NUMBER}"
     }
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/iam-venkateshwarlu/Docker-example.git'
+                git branch: 'main', url: 'https://github.com/iam-venkateshwarlu/Docker-example.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$BUILD_NUMBER .'
+                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
             }
         }
         stage('Push to Docker Hub') {
             steps {
-                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                sh 'docker push $IMAGE_NAME:$BUILD_NUMBER'
-                sh 'docker tag $IMAGE_NAME:$BUILD_NUMBER $IMAGE_NAME:latest'
-                sh 'docker push $IMAGE_NAME:latest'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'docker push $DOCKER_IMAGE:$DOCKER_TAG'
+                }
             }
         }
-        /*
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
-            }
+    }
+    post {
+        success {
+            echo "✅ Docker image pushed successfully: $DOCKER_IMAGE:$DOCKER_TAG"
         }
-        */
+        failure {
+            echo "❌ Pipeline failed! Check console logs."
+        }
     }
 }
