@@ -1,5 +1,6 @@
 pipeline {
     agent any
+     tools { nodejs "NodeJS24" }
     environment {
         DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
         DOCKER_TAG = "v${env.BUILD_NUMBER}"
