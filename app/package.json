@@ -1,18 +1,12 @@
-
 {
   "name": "sample-nodejs-app",
-  "description": "Nodeapp for CICD test",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "express": "4.17.1"
-  },
-  "devDependencies": {
-    "mocha": "9.1.1",
-    "supertest": "6.1.6"
-  },
+  "version": "1.0.0",
+  "description": "Sample Node.js App with Kubernetes ConfigMap",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "./node_modules/.bin/mocha ./test/test.js"
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }

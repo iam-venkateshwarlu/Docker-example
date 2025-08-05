@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: sample-nodejs-app
 spec:
-  replicas: 3 # Number of pod: replicas
+  replicas: 2 # Number of pod: replicas
   selector:
     matchLabels:
       app: sample-nodejs-app
@@ -14,8 +14,10 @@ spec:
     spec:
       containers:
       - name: sample-nodejs-app
-        image: venkatesh1409/sample-nodejs-app:v2
+        image: venkatesh1409/sample-nodejs-app:v3
         # command: ["sleep", "notanumber"] # This will cause the pod to crash
         ports:
         - containerPort: 3000
- 
+        envFrom:
+        - configMapRef:
+            name: sample-nodejs-configmap

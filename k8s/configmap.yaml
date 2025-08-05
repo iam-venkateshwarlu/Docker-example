@@ -1,0 +1,13 @@
+#object that stores confuguration data in key-value pairs
+# This ConfigMap is used to store environment variables for a Node.js application
+# It can be referenced in the deployment to inject these variables into the application
+#instead of hardcoding values in your deployment YAML , you out in configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-nodejs-configmap
+data:
+  APP_ENV : production
+  PORT: "3000"
+  WELCOME_MSG : "Hello from ConfigMap in kubernetes"
+  # DB_PORT : "3306
