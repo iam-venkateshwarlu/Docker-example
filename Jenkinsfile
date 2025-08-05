@@ -11,9 +11,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
-        stage('Install Dependencies') {
+         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                dir('app') {
+                    sh 'npm install'
+                }
             }
         }
         stage('Build Docker Image') {
