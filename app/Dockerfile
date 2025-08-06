@@ -4,7 +4,7 @@ FROM node:18-alpine
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json first to leverage Docker caching
-COPY package*.json ./
+COPY app/package*.json ./
 
 # Install dependencies
 RUN npm install
