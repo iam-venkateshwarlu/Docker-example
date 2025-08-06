@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   jenkins:
     container_name: jenkins-ci
@@ -10,19 +8,12 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    user: root
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - $HOME/.kube:/root/.kube
       - $HOME/.minikube:/root/.minikube
-    user: root
-    command: >
-      bash -c "
-        DOCKER_GID=$(stat -c '%g' /var/run/docker.sock) &&
-        groupadd -g $DOCKER_GID docker || true &&
-        usermod -aG docker jenkins &&
-        su jenkins -c '/usr/local/bin/jenkins.sh'
-      "
 
 volumes:
   jenkins_home:
