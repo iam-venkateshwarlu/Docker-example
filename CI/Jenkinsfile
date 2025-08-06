@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
-        DOCKER_TAG = "${BUILD_NUMBER}"
+        DOCKER_TAG   = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -16,7 +16,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('app') {
-                    // Assuming the Node.js app has a package.json file
                     sh 'npm install'
                 }
             }
@@ -38,23 +37,12 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                 script {
+                script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
                         docker.image("venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}").push()
                     }
                 }
             }
         }
-            /*
-        stage('Deploy to Minikube') {
-            steps {
-                 script {
-            sh '''
-            kubectl apply -f k8s/deployment.yaml
-            kubectl apply -f k8s/service.yaml
-            '''
-                 }
-            }
-        } */
     }
 }
