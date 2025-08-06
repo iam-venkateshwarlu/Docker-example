@@ -1,0 +1,20 @@
+# DevOps Jenkins Dockerfile
+FROM jenkins/jenkins:lts
+
+USER root
+#install dependencies
+RUN apt-get update && apt-get install -y \
+    docker.io \
+    curl wget git \
+    nodejs npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install kubectl (for Apple Silicon / ARM64)
+RUN curl -LO "https://dl.k8s.io/release/v1.30.0/bin/linux/arm64/kubectl" && \
+    chmod +x kubectl && mv kubectl /usr/local/bin/
+
+# Install Trivy
+RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh \
+    && mv ./bin/trivy /usr/local/bin/trivy
+
+USER jenkins

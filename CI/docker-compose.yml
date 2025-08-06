@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  jenkins:
+    container_name: jenkins-ci
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.kube:/root/.kube
+
+volumes:
+  jenkins_home:
