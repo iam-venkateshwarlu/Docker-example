@@ -2,16 +2,14 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Install git and docker CLI only (not daemon)
+# Install git and docker CLI
 RUN apt-get update && \
-    apt-get install -y git curl && \
-    curl -fsSL https://get.docker.com/rootless | sh && \
-    ln -s /usr/bin/docker /usr/local/bin/docker && \
+    apt-get install -y git docker.io && \
     rm -rf /var/lib/apt/lists/*
 
-# Add Jenkins to docker group dynamically (host GID)
-ARG DOCKER_GID=999
-RUN groupadd -for -g ${DOCKER_GID} docker && \
-    usermod -aG docker jenkins
+# Add docker group (with placeholder GID) and add jenkins user to it
+ARG DOCKER_GID=1
+RUN groupadd -g ${DOCKER_GID} docker || true && \
+usermod -aG docker jenkins
 
 USER jenkins
