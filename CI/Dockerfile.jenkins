@@ -2,7 +2,7 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Install dependencies: docker, kubectl, trivy
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -15,13 +15,16 @@ RUN apt-get update && apt-get install -y \
 # Install Docker CLI
 RUN curl -fsSL https://get.docker.com | sh
 
+# Add Jenkins user to Docker group
+RUN groupadd -for docker && usermod -aG docker jenkins
+
 # Install kubectl
 RUN K8S_VERSION=$(curl -sL https://dl.k8s.io/release/stable.txt) && \
     curl -LO "https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/arm64/kubectl" && \
     chmod +x kubectl && mv kubectl /usr/local/bin/
 
 # Install Trivy
-RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh && \
-    mv ./bin/trivy /usr/local/bin/
+RUN curl -sSL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh \
+    && mv ./bin/trivy /usr/local/bin/
 
 USER jenkins
