@@ -7,6 +7,14 @@ pipeline {
     }
 
     stages {
+        stage('checkout docker') {
+            steps {
+                script {
+                  sh 'docker --verison'
+                  sh 'docker ps'
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/iam-venkateshwarlu/Docker-example.git'
