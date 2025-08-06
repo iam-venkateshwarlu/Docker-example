@@ -15,7 +15,10 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                dir('app') {
+                    // Assuming the Node.js app has a package.json file
+                    sh 'npm install'
+                }
             }
         }
 
