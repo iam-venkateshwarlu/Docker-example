@@ -7,16 +7,24 @@ pipeline {
     }
 
     stages {
+        stage('Verify Docker') {
+            steps {
+                sh 'docker --version'
+                sh 'docker ps'
+            }
+        }
+
         stage('Checkout') {
             steps {
+                deleteDir()
                 git branch: 'main', url: 'https://github.com/iam-venkateshwarlu/Docker-example.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dir('app') {
+                dir('app') {
+                    script {
                         dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
                     }
                 }
@@ -25,9 +33,7 @@ pipeline {
 
         stage('Trivy Scan') {
             steps {
-                script {
-                    sh "trivy image --exit-code 0 --severity HIGH,CRITICAL ${DOCKER_IMAGE}:${DOCKER_TAG} || true"
-                }
+                sh "trivy image --exit-code 0 --severity HIGH,CRITICAL ${DOCKER_IMAGE}:${DOCKER_TAG} || true"
             }
         }
 
@@ -41,14 +47,5 @@ pipeline {
                 }
             }
         }
-
-        // stage('Clean Up') {
-        //     steps {
-        //         script {
-        //             sh "docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true"
-        //             sh "docker rmi ${DOCKER_IMAGE}:latest || true"
-        //         }
-        //     }
-        // }
     }
 }
