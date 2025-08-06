@@ -48,8 +48,13 @@ pipeline {
 
         stage('Deploy to Minikube') {
             steps {
-                sh 'kubectl set image deployment/sample-nodejs-app sample-nodejs-app=$DOCKER_IMAGE:$DOCKER_TAG --record'
-            }
+                sh """
+                kubectl set image deployment/sample-nodejs-app \
+                sample-nodejs-app=${DOCKER_IMAGE}:${DOCKER_TAG} --record
+                """
+                }
+
         }
     }
-}
+    
+

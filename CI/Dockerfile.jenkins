@@ -17,4 +17,10 @@ RUN curl -LO "https://dl.k8s.io/release/v1.30.0/bin/linux/arm64/kubectl" && \
 RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh \
     && mv ./bin/trivy /usr/local/bin/trivy
 
+# Install kubectl (arm64 for Apple Silicon)
+RUN curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin/
+
+
 USER jenkins
