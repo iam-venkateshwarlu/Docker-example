@@ -1,26 +1,27 @@
-# DevOps Jenkins Dockerfile
 FROM jenkins/jenkins:lts
 
 USER root
-#install dependencies
+
+# Install dependencies: docker, kubectl, trivy
 RUN apt-get update && apt-get install -y \
-    docker.io \
-    curl wget git \
-    nodejs npm \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    telnet \
     && rm -rf /var/lib/apt/lists/*
 
-# Install kubectl (for Apple Silicon / ARM64)
-RUN curl -LO "https://dl.k8s.io/release/v1.30.0/bin/linux/arm64/kubectl" && \
+# Install Docker CLI
+RUN curl -fsSL https://get.docker.com | sh
+
+# Install kubectl
+RUN K8S_VERSION=$(curl -sL https://dl.k8s.io/release/stable.txt) && \
+    curl -LO "https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/arm64/kubectl" && \
     chmod +x kubectl && mv kubectl /usr/local/bin/
 
 # Install Trivy
-RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh \
-    && mv ./bin/trivy /usr/local/bin/trivy
-
-# Install kubectl (arm64 for Apple Silicon)
-RUN curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
-    && chmod +x kubectl \
-    && mv kubectl /usr/local/bin/
-
+RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh && \
+    mv ./bin/trivy /usr/local/bin/
 
 USER jenkins
