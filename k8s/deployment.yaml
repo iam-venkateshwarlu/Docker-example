@@ -18,6 +18,4 @@ spec:
         # command: ["sleep", "notanumber"] # This will cause the pod to crash
         ports:
         - containerPort: 3000
-        envFrom:
-        - configMapRef:
-            name: sample-nodejs-configmap
+     
