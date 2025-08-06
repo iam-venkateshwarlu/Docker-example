@@ -51,12 +51,4 @@ pipeline {
             }
         }
     }
-    //  post {
-    //     success {
-    //         echo "✅ Docker image pushed successfully: $DOCKER_IMAGE:$DOCKER_TAG"
-    //     }
-    //     failure {
-    //         echo "❌ Pipeline failed! Check console logs."
-    //     }
-    // }
 }
