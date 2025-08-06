@@ -1,0 +1,6 @@
+version: '3'
+services:
+  nodejs-app:
+    image: venkatesh1409/sample-nodejs-app:latest
+    ports:
+      - "3000:3000"

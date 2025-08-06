@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sample-nodejs-app
-        image: venkatesh1409/sample-nodejs-app:v3
+        image: venkatesh1409/sample-nodejs-app:latest
         # command: ["sleep", "notanumber"] # This will cause the pod to crash
         ports:
         - containerPort: 3000
