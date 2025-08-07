@@ -15,6 +15,14 @@ pipeline {
             }
         }
 
+         stage('Login to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo "Docker user is: $DOCKER_USER"'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 dir('app') {
@@ -26,14 +34,6 @@ pipeline {
         stage('Trivy Scan') {
             steps {
                 sh 'trivy image --exit-code 0 --severity HIGH,CRITICAL $DOCKER_IMAGE:$DOCKER_TAG || true'
-            }
-        }
-
-        stage('Login to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                }
             }
         }
 
