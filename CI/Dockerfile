@@ -13,4 +13,4 @@ RUN groupadd -g ${DOCKER_GID} docker || true && \
     usermod -aG docker jenkins
 
 # 👇 Switch back to Jenkins user so pipelines run with correct permissions
-# USER jenkins
+USER jenkins
