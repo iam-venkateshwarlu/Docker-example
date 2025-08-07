@@ -25,15 +25,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // dir('app') {
-                //     // sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
-                //     sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ./app"
-                // }
-                script {
-                 def imageTag = "${DOCKER_IMAGE}:${DOCKER_TAG}"
-                 sh "docker build -t ${imageTag} ./app"
+                dir('app') {
+                    sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                    // sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ./app"
                 }
-
             }
         }
 
@@ -53,19 +48,19 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'kubeconfig-cred']) {
-                        sh '''
-                            kubectl apply -f k8s/deployment.yaml
-                            kubectl apply -f k8s/nodeport.yaml
-                            kubectl apply -f k8s/service.yaml
-                            kubectl rollout status deployment/sample-nodejs-app
-                        '''
-                    }
-                }
-            }
-        }
+    //     stage('Deploy to Kubernetes') {
+    //         steps {
+    //             script {
+    //                 withKubeConfig([credentialsId: 'kubeconfig-cred']) {
+    //                     sh '''
+    //                         kubectl apply -f k8s/deployment.yaml
+    //                         kubectl apply -f k8s/nodeport.yaml
+    //                         kubectl apply -f k8s/service.yaml
+    //                         kubectl rollout status deployment/sample-nodejs-app
+    //                     '''
+    //                 }
+    //             }
+    //         }
+    //     }
     }
 }
