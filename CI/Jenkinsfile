@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        // PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" = docker
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
         DOCKER_HOST = 'unix:///Users/pradyuman/.docker/run/docker.sock'
         DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
