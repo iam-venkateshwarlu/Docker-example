@@ -4,6 +4,7 @@ pipeline {
     environment {
         // PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" = docker
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        KUBECONFIG = "$HOME/.kube/config"
         DOCKER_HOST = 'unix:///Users/pradyuman/.docker/run/docker.sock'
         DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
@@ -62,19 +63,21 @@ pipeline {
             }
         }
 
-    //     stage('Deploy to Kubernetes') {
-    //         steps {
-    //             script {
-    //                 withKubeConfig([credentialsId: 'kubeconfig-cred']) {
-    //                     sh '''
-    //                         kubectl apply -f k8s/deployment.yaml
-    //                         kubectl apply -f k8s/nodeport.yaml
-    //                         kubectl apply -f k8s/service.yaml
-    //                         kubectl rollout status deployment/sample-nodejs-app
-    //                     '''
-    //                 }
-    //             }
-    //         }
-    //     }
+        stage('Deploy to Minikube') {
+            steps {
+                script {
+                    sh '''
+                    export BUILD_NUMBER=${BUILD_NUMBER}
+                    envsubst < k8s/deployment-template.yaml > k8s/deployment.yaml
+
+                    kubectl apply -f k8s/deployment.yaml
+                    ubectl apply -f k8s/service.yaml
+
+                    kubectl rollout status deployment/sample-nodejs-app
+                    '''
+        }
+    }
+}
+
     }
 }
