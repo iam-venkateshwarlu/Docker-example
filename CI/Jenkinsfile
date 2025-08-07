@@ -43,18 +43,18 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'kubeconfig-cred']) {  // store kubeconfig in Jenkins credentials
-                sh '''
-                kubectl apply -f k8s/deployment.yaml
-                kubectl apply -f k8s/nodeport.yaml
-                kubectl rollout status deployment/sample-nodejs-app
-                '''
-            }
-                }
-            }
-        }
+        // stage('Deploy to Kubernetes') {
+        //     steps {
+        //         script {
+        //             withKubeConfig([credentialsId: 'kubeconfig-cred']) {  // store kubeconfig in Jenkins credentials
+        //         sh '''
+        //         kubectl apply -f k8s/deployment.yaml
+        //         kubectl apply -f k8s/nodeport.yaml
+        //         kubectl rollout status deployment/sample-nodejs-app
+        //         '''
+        //     }
+        //         }
+        //     }
+        // }
     }
 }
