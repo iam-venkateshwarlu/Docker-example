@@ -2,15 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HOST = 'unix:///Users/pradyuman/.docker/run/docker.sock'
         PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        DOCKER_HOST = 'unix:///Users/pradyuman/.docker/run/docker.sock'
         DOCKER_IMAGE = "venkatesh1409/sample-nodejs-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
     }
 
     stages {
-       
-
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/iam-venkateshwarlu/Docker-example.git'
