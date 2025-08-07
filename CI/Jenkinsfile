@@ -47,18 +47,19 @@ pipeline {
             }
         }
 
-        // stage('Deploy to Kubernetes') {
-        //     steps {
-        //         script {
-        //             withKubeConfig([credentialsId: 'kubeconfig-cred']) {
-        //                 sh '''
-        //                     kubectl apply -f k8s/deployment.yaml
-        //                     kubectl apply -f k8s/nodeport.yaml
-        //                     kubectl rollout status deployment/sample-nodejs-app
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'kubeconfig-cred']) {
+                        sh '''
+                            kubectl apply -f k8s/deployment.yaml
+                            kubectl apply -f k8s/nodeport.yaml
+                            kubectl apply -f k8s/service.yaml
+                            kubectl rollout status deployment/sample-nodejs-app
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
