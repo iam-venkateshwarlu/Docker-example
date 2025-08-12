@@ -4,6 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sample-nodejs-service
+  namespace: dev
 spec:
   type: NodePort
   selector:
@@ -11,4 +12,4 @@ spec:
   ports:
   - port: 80 # Port exposed by the service
     targetPort: 3000 # Port on the container
-    nodePort: 31234 # NodePort is optional for ClusterIP, but can be used for direct access
+    nodePort: 30090 # NodePort is optional for ClusterIP, but can be used for direct access

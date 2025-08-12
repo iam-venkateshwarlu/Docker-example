@@ -1,0 +1,9 @@
+## Namespace for development environment, kubernetes cluster where you can keep related resources (pods, service, configmap, secrets)
+#isolation - separate environments, such as dev, staging, production
+#resource management - apply resource quotas, limits, and policies
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+  

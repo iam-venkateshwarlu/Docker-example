@@ -2,12 +2,12 @@ var express = require('express');
 var app = express();
 //configure express app
 const PORT = process.env.PORT || 3000;
-const env = process.env.APP_ENV || 'development';
-const message = process.env.MESSAGE || 'Hello World!';
+// const env = process.env.APP_ENV || 'development';
+const message = process.env.APP_MESSAGE || 'Hello !';
 
 //root endpoint
 app.get('/',  (req, res) => {
-    res.send('<h2> Sample Node JS App </h2><p>Environment: ' + env + '</p><p>Message: ' + message + '</p>');
+    res.send('<h2> Sample Node JS App </h2><p>Message: ' + message + '</p>');
 });
 //Health check endpoint
 app.get('/ready', (req, res) => {
@@ -15,9 +15,9 @@ app.get('/ready', (req, res) => {
 });
 // start server
 app.listen(PORT, () => {
-    console.log('Server is running on port ' + PORT + ' in ' + env + ' mode. Message: ' + message);
+    console.log('Server is running on port ' + PORT + ' in ' + message);
 });
-// module.exports = app;
+module.exports = app;
 
 /*
 app.get('/will', function (req, res) {
