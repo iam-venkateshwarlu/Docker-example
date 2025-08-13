@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install only dependencies needed for build 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
@@ -32,7 +32,7 @@ LABEL maintainer="tvenkateshwarlu39@gmail.com" \
 HEALTHCHECK --interval=30s --timeout=5s \
   CMD wget -qO- http://localhost:3000/ || exit 1
 
-  
+
 # Expose the application port
 EXPOSE 3000
 
