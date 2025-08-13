@@ -1,3 +1,17 @@
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello from Docker Best Practices Example 🚀');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+/*
 var express = require('express');
 var app = express();
 //configure express app
@@ -18,6 +32,7 @@ app.listen(PORT, () => {
     console.log('Server is running on port ' + PORT + ' in ' + message);
 });
 module.exports = app;
+*/
 
 /*
 app.get('/will', function (req, res) {

@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sample-nodejs-app
-  namespace: dev # Namespace where the deployment will be created
+  name: sample-nodejs-deployment
+  namespace: dev
 spec:
-  replicas: 2 # Number of pod: replicas
+  replicas: 1
   selector:
     matchLabels:
       app: sample-nodejs-app
@@ -14,12 +14,10 @@ spec:
         app: sample-nodejs-app
     spec:
       containers:
-      - name: sample-nodejs-app
-        image: venkatesh1409/sample-nodejs-app:latest
-        # command: ["sleep", "notanumber"] # This will cause the pod to crash
+      - name: sample-nodejs-container
+        image: your-dockerhub-username/sample-nodejs-app:latest
         ports:
         - containerPort: 3000
         envFrom:
         - configMapRef:
             name: sample-nodejs-configmap
-     

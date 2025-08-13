@@ -1,23 +1,23 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sample-nodejs-app
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: sample-nodejs-app
-  template:
-    metadata:
-      labels:
-        app: sample-nodejs-app
-    spec:
-      containers:
-      - name: sample-nodejs-app
-        image: venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}
-        ports:
-        - containerPort: 3000
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: sample-nodejs-configmap
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sample-nodejs-app
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: sample-nodejs-app
+#   template:
+#     metadata:
+#       labels:
+#         app: sample-nodejs-app
+#     spec:
+#       containers:
+#       - name: sample-nodejs-app
+#         image: venkatesh1409/sample-nodejs-app:${BUILD_NUMBER}
+#         ports:
+#         - containerPort: 3000
+#         imagePullPolicy: Always
+#         envFrom:
+#         - configMapRef:
+#             name: sample-nodejs-configmap
