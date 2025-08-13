@@ -68,11 +68,7 @@ pipeline {
                 script {
                     sh '''
                     export BUILD_NUMBER=${BUILD_NUMBER}
-                    envsubst < k8s/deployment-template.yaml > k8s/deployment.yaml
-
-                    // kubectl apply -f k8s/deployment.yaml
-                    // kubectl apply -f k8s/service.yaml
-
+                    
                     kubectl rollout status deployment/sample-nodejs-app
                     '''
         }
@@ -81,3 +77,8 @@ pipeline {
 
     }
 }
+
+// envsubst < k8s/deployment-template.yaml > k8s/deployment.yaml
+                    // kubectl apply -f k8s/deployment.yaml
+                    // kubectl apply -f k8s/service.yaml
+                    
