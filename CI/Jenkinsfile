@@ -57,7 +57,7 @@ pipeline {
             steps {
                 sh '''
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
-                    docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:latest
+                    docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:1.0.0
                     docker push $DOCKER_IMAGE:latest
                 '''
             }
