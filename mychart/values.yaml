@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: venkatesh1409/sample-nodejs-app
-  tag: "1.0.0"
+  tag: "1.0.1"
   pullPolicy: IfNotPresent
 
 service:
