@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: sample-nodejs-container
-          image: venkatesh1409/sample-nodejs-app:1.0.0
+          image: venkatesh1409/sample-nodejs-app:0.0.1
           ports:
             - containerPort: 3003
           resources:

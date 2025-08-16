@@ -11,6 +11,6 @@ spec:
     wporkload: dev
   ports:
   - protocol: TCP
-    port: 8081
-    targetPort: 3003
-  type: LoadBalancer
+    port: 3004
+    targetPort: 3004
+  # type: LoadBalancer
