@@ -1,9 +1,22 @@
 const express = require('express');
+const client = require('prom-client');
+
 const app = express();
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics();
+
+const httpRequestCounter = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello from Docker Best Practices Example 🚀 + ' + process.env.APP_MESSAGE || 'Hello World!');
+  httpRequestCounter.inc({ method: "GET", route: '/', status_code: 200 });
+  res.send('Hello from Docker Best Practices Example 🚀 + ' + (process.env.APP_MESSAGE || 'Hello World!'));
+  // res.send('Hello from Docker Best Practices Example 🚀 + ' + process.env.APP_MESSAGE || 'Hello World!');
 });
 
 app.listen(PORT, () => {
