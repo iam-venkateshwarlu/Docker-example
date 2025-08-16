@@ -2,26 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sample-nodejs-app
-  labels:
-    app: sample-nodejs-app
 spec:
-  replicas: 2
+  replicas: 2 # Number of replicas, managed pods
   selector:
     matchLabels:
       app: sample-nodejs-app
+      workload: dev
   template:
     metadata:
       labels:
         app: sample-nodejs-app
+        workload: dev
     spec:
       containers:
-        - name: sample-nodejs-app
+        - name: sample-nodejs-container
           image: venkatesh1409/sample-nodejs-app:1.0.0
           ports:
-            - containerPort: 3000
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            - containerPort: 3003
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "1"
+          
+ 
