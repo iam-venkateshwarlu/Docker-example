@@ -1,5 +1,5 @@
 #Use a small base image
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Multi-stage: create a smaller runtime image
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Security: avoid running as root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

@@ -10,6 +10,10 @@ pipeline {
         DOCKER_TAG   = "0.0.1"
     }
 
+    trigger {
+            pollSCM('*/5 * * * *')
+        }
+
     stages {
         stage('Checkout') {
             steps {

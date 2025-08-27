@@ -13,6 +13,10 @@ spec:
       labels:
         app: sample-nodejs-app
         workload: dev
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3003"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: sample-nodejs-container
