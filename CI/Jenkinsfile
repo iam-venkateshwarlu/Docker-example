@@ -10,7 +10,7 @@ pipeline {
         DOCKER_TAG   = "0.0.1"
     }
 
-    trigger {
+    triggers {
             pollSCM('*/5 * * * *')
         }
 
